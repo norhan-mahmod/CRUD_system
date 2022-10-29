@@ -56,6 +56,7 @@
                 unset($_SESSION["delete_success"]);
             }
         ?>
+        <a href="form.php" class="btn btn-secondary">Add New Product</a>
         <table class="table table-striped">
             <thead>
                 <tr>

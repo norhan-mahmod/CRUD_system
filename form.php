@@ -42,6 +42,7 @@
                 <input class="d-none" name="id" value="<?= $_GET["id"] ?>">
             <?php endif; ?>
             <button type="submit" class="btn btn-primary">Save</button>
+            <a href="list.php" class="btn btn-secondary">Products</a>
         </div>
   </form>
 </body>
