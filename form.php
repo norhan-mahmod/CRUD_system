@@ -38,6 +38,19 @@
                 <input type="number" name="quantity" class="form-control" id="productquantity" value="<?= $update?$_GET["quantity"]:'' ?>">
                 </div>
             </div>
+            <!-- category -->
+            <div class="mb-3 row">
+                <label for="productprice" class="col-sm-4 col-form-label">category</label>
+                <div class="col-sm-8">
+                <select class="form-select" name="category" aria-label="Default select example">
+                    <?php
+                        require "connect.php";
+                        select_all_categories();
+                    ?>
+                </select>
+                </div>
+            </div>
+            <!-- id for updated product -->
             <?php if($update): ?> 
                 <input class="d-none" name="id" value="<?= $_GET["id"] ?>">
             <?php endif; ?>

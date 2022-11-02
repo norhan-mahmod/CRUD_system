@@ -4,34 +4,21 @@
     $quantity=isset($_POST["quantity"])?$_POST["quantity"]:"";
     
     session_start(); 
+    
     //to update product in database
     if(isset($_POST["id"])&& strlen($name)>0 && strlen($price)>0 && strlen($quantity)>0){
-        $stmt=$pdo->prepare("
-            UPDATE products SET name= :name , price= :price , quantity= :quantity
-            WHERE id=".$_POST["id"]);
-        $stmt->execute(array(
-            ":name"=>$_POST["name"],
-            ":price"=>$_POST["price"],
-            ":quantity"=>$_POST["quantity"]
-        ));
-        $_SESSION["message"]="the product updated successfully";
+        update_product();
     }
     //to insert product into database  
     elseif(strlen($name)>0 && strlen($price)>0 && strlen($quantity)>0){
-        $stmt=$pdo->prepare("INSERT INTO products(name,price,quantity) VALUES (:name,:price,:quantity)");
-        $stmt->execute(array(
-            ":name"=>$_POST["name"],
-            ":price"=>$_POST["price"],
-            ":quantity"=>$_POST["quantity"]
-        ));
-        $_SESSION["message"]="the product inserted successfully";
+        insert_product();
         
     }elseif(isset($_SERVER["HTTP_REFERER"])&&isset($_POST["name"])&&isset($_POST["price"])&&isset($_POST["quantity"])){
         header("location: ". $_SERVER["HTTP_REFERER"]);
         $_SESSION["error"]="please enter data to be inserted";
     }
     if(isset($_GET["id"])){
-        $stmt=$pdo->query("DELETE FROM products WHERE id=".$_GET["id"]);
+        delete_product();
         $_SESSION["delete_success"]="the item deleted successfully";
     }
 ?>
@@ -64,26 +51,11 @@
                 <th scope="col">Name</th>
                 <th scope="col">Price</th>
                 <th scope="col">Quantity</th>
+                <th scope="col">category</th>
                 </tr>
             </thead>
             <tbody>
-                <?php 
-                    $stmt=$pdo->query("SELECT * FROM products");
-                    while($row=$stmt->fetch(PDO::FETCH_ASSOC)):
-                 ?>
-                 <tr>
-                    <td><?= $row["id"] ?></td>
-                    <td><?= $row["name"] ?></td>
-                    <td><?= $row["price"] ?></td>
-                    <td><?= $row["quantity"] ?></td>
-                    <td><a href="list.php?id=<?= $row["id"]; ?>" class="btn btn-danger">Delete</a></td>
-                    <td>
-                        <a 
-                         href="form.php?id=<?= $row["id"] ?>&name=<?= $row["name"] ?>&price=<?= $row["price"] ?>&quantity=<?= $row["quantity"] ?>"
-                         class="btn btn-primary">Update</a>
-                    </td>
-                 </tr>
-                 <?php endwhile; ?>
+                <?php show_products(); ?>
             </tbody>
         </table>
     </div>
